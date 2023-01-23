@@ -48,6 +48,9 @@ przedziałów.
 # fails with py3
 %{__sed} -i -e '/^\tglue_ligolw_ilwd_verify /d' test/Makefile
 
+# uses remote DTD
+%{__sed} -i -e '/^\ttest_ldbd /d' test/Makefile
+
 # doctest failure
 %{__sed} -i -e '/^\ttest_ligolw_ligolw /d' test/Makefile
 

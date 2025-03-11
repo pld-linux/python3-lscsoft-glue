@@ -8,7 +8,7 @@ Summary:	Grid LSC User Engine
 Summary(pl.UTF-8):	Silnik użytkownika Grid LSC
 Name:		python3-lscsoft-glue
 Version:	3.0.1
-Release:	2
+Release:	3
 License:	GPL v3+
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/lscsoft-glue/

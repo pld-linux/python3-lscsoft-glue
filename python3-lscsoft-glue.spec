@@ -13,6 +13,7 @@ Group:		Libraries/Python
 Source0:	https://files.pythonhosted.org/packages/source/l/lscsoft-glue/lscsoft-glue-%{version}.tar.gz
 # Source0-md5:	9414ea200a8711dd699a1df520aa6746
 Patch0:		python3.13.patch
+Patch1:		i32.patch
 URL:		https://pypi.org/project/lscsoft-glue/
 BuildRequires:	python3-devel >= 1:3.6
 BuildRequires:	python3-setuptools
@@ -44,6 +45,7 @@ przedziałów.
 %prep
 %setup -q -n lscsoft-glue-%{version}
 %patch -P0 -p1
+%patch -P1 -p1
 
 # fails with py3
 %{__sed} -i -e '/^\tglue_ligolw_ilwd_verify /d' test/Makefile

@@ -1,0 +1,23 @@
+--- lscsoft-glue-3.0.1/glue/ligolw/ilwd.c~	2025-06-08 00:15:01.000000000 +0200
++++ lscsoft-glue-3.0.1/glue/ligolw/ilwd.c	2025-06-08 00:17:52.986659579 +0200
+@@ -108,12 +108,19 @@
+ 	return new;
+ }
+ 
+-
++#ifdef __ILP32__
++static int ligolw_ilwdchar___hash__(PyObject *self)
++#else
+ static long ligolw_ilwdchar___hash__(PyObject *self)
++#endif
+ {
+ 	PyObject *tbl = PyObject_GetAttr(self, table_name);
+ 	PyObject *col = PyObject_GetAttr(self, column_name);
++#ifdef __ILP32__
++	int hash;
++#else
+ 	long hash;
++#endif
+ 
+ 	if(tbl && col) {
+ 		hash = PyObject_Hash(tbl) ^ PyObject_Hash(col) ^ ((ligolw_ilwdchar *) self)->i;

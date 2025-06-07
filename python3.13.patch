@@ -1,0 +1,73 @@
+diff -ur python-ligo-lw-1.8.3/glue/ligolw/tokenizer.RowBuilder.c python-ligo-lw/glue/ligolw/tokenizer.RowBuilder.c
+--- python-ligo-lw-1.8.3/glue/ligolw/tokenizer.RowBuilder.c	2021-12-10 09:25:59.000000000 +0100
++++ python-ligo-lw/glue/ligolw/tokenizer.RowBuilder.c	2025-06-07 22:55:21.823326412 +0200
+@@ -228,7 +228,7 @@
+ 
+ 
+ PyTypeObject ligolw_RowBuilder_Type = {
+-	PyObject_HEAD_INIT(NULL)
++	PyVarObject_HEAD_INIT(NULL, 0)
+ 	.tp_basicsize = sizeof(ligolw_RowBuilder),
+ 	.tp_dealloc = __del__,
+ 	.tp_doc =
+diff -ur python-ligo-lw-1.8.3/glue/ligolw/tokenizer.RowDumper.c python-ligo-lw/glue/ligolw/tokenizer.RowDumper.c
+--- python-ligo-lw-1.8.3/glue/ligolw/tokenizer.RowDumper.c	2022-07-29 11:29:20.000000000 +0200
++++ python-ligo-lw/glue/ligolw/tokenizer.RowDumper.c	2025-06-07 22:55:21.823326412 +0200
+@@ -104,7 +104,7 @@
+ 	else
+ 		rowdumper->delimiter = PyUnicode_FromWideChar(&default_delimiter, 1);
+ 	rowdumper->attributes = llwtokenizer_build_attributes(rowdumper->attributes);
+-	rowdumper->formats = llwtokenizer_build_formats(rowdumper->formats);
++	rowdumper->formats = PySequence_Tuple(rowdumper->formats);
+ 	if(!rowdumper->delimiter || !rowdumper->attributes || !rowdumper->formats)
+ 		/* memory clean-up happens in __del__() */
+ 		return -1;
+@@ -280,7 +280,7 @@
+ 
+ 
+ PyTypeObject ligolw_RowDumper_Type = {
+-	PyObject_HEAD_INIT(NULL)
++	PyVarObject_HEAD_INIT(NULL, 0)
+ 	.tp_basicsize = sizeof(ligolw_RowDumper),
+ 	.tp_dealloc = __del__,
+ 	.tp_doc =
+diff -ur python-ligo-lw-1.8.3/glue/ligolw/tokenizer.Tokenizer.c python-ligo-lw/glue/ligolw/tokenizer.Tokenizer.c
+--- python-ligo-lw-1.8.3/glue/ligolw/tokenizer.Tokenizer.c	2022-07-29 11:29:20.000000000 +0200
++++ python-ligo-lw/glue/ligolw/tokenizer.Tokenizer.c	2025-06-07 22:55:21.823326412 +0200
+@@ -738,7 +709,7 @@
+ 
+ 
+ PyTypeObject ligolw_Tokenizer_Type = {
+-	PyObject_HEAD_INIT(NULL)
++	PyVarObject_HEAD_INIT(NULL, 0)
+ 	.tp_basicsize = sizeof(ligolw_Tokenizer),
+ 	.tp_dealloc = __del__,
+ 	.tp_doc =
+--- lscsoft-glue-3.0.1/glue/ligolw/ilwd.c~	2022-01-21 17:30:58.000000000 +0100
++++ lscsoft-glue-3.0.1/glue/ligolw/ilwd.c	2025-06-07 23:58:52.073326257 +0200
+@@ -296,12 +296,12 @@
+ 		/* 23 = 20 characters for a long int (2^63 == 19 digits,
+ 		 * plus a possible "-" sign) + 2 ":" characters + a null
+ 		 * terminator */
+-		Py_ssize_t tbl_len = PyUnicode_GetSize(tbl);
+-		Py_ssize_t col_len = PyUnicode_GetSize(col);
++		Py_ssize_t tbl_len = PyUnicode_GetLength(tbl);
++		Py_ssize_t col_len = PyUnicode_GetLength(col);
+ 		wchar_t buff[tbl_len + col_len + 23];
+-		PyUnicode_AsWideChar((PyUnicodeObject *) tbl, buff, tbl_len);
++		PyUnicode_AsWideChar(tbl, buff, tbl_len);
+ 		buff[tbl_len] = L':';
+-		PyUnicode_AsWideChar((PyUnicodeObject *) col, buff + tbl_len + 1, col_len);
++		PyUnicode_AsWideChar(col, buff + tbl_len + 1, col_len);
+ 		buff[tbl_len + 1 + col_len] = L':';
+ 		swprintf(&buff[tbl_len + 1 + col_len], tbl_len + col_len + 23, L":%ld", ilwd->i);
+ 		result = PyUnicode_FromWideChar(buff, wcslen(buff));
+@@ -388,7 +388,7 @@
+ 
+ 
+ PyTypeObject ligolw_ilwdchar_Type = {
+-	PyObject_HEAD_INIT(NULL)
++	PyVarObject_HEAD_INIT(NULL, 0)
+ 	.tp_basicsize = sizeof(ligolw_ilwdchar),
+ 	.tp_name = MODULE_NAME ".ilwdchar",
+ 	.tp_doc =

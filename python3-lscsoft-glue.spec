@@ -1,19 +1,18 @@
 #
 # Conditional build:
-%bcond_without	tests	# unit tests
-%bcond_without	python2 # CPython 2.x module
-%bcond_without	python3 # CPython 3.x module
+%bcond_with	tests	# unit tests
 
 Summary:	Grid LSC User Engine
 Summary(pl.UTF-8):	Silnik użytkownika Grid LSC
 Name:		python3-lscsoft-glue
 Version:	3.0.1
-Release:	3
+Release:	4
 License:	GPL v3+
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/lscsoft-glue/
 Source0:	https://files.pythonhosted.org/packages/source/l/lscsoft-glue/lscsoft-glue-%{version}.tar.gz
 # Source0-md5:	9414ea200a8711dd699a1df520aa6746
+Patch0:		python3.13.patch
 URL:		https://pypi.org/project/lscsoft-glue/
 BuildRequires:	python3-devel >= 1:3.6
 BuildRequires:	python3-setuptools
@@ -44,6 +43,7 @@ przedziałów.
 
 %prep
 %setup -q -n lscsoft-glue-%{version}
+%patch -P0 -p1
 
 # fails with py3
 %{__sed} -i -e '/^\tglue_ligolw_ilwd_verify /d' test/Makefile
